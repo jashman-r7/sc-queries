@@ -1,0 +1,3 @@
+MATCH (a:Asset) 
+WHERE a.`Rapid7InsightAgent:uniqueIds.id` IS NOT NULL 
+RETURN a
