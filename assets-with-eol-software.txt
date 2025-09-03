@@ -1,0 +1,5 @@
+MATCH (f:Finding)-[:applies_to]->(a:Asset) 
+WHERE f.vulnerability.name ICONTAINS 'obsolete' AND NOT (f.vulnerability.name ICONTAINS 'windows server' OR f.vulnerability.name ICONTAINS 'linux' OR f.vulnerability.name ICONTAINS 'mac')
+RETURN DISTINCT
+    toString(f.vulnerability.name) AS Vulnerability, toString(a.name) AS Hostname, f.vulnerability.description, toString(a.operating_system) AS OS
+ORDER BY Hostname
