@@ -1,0 +1,14 @@
+MATCH (a:Asset)
+WHERE (a.operating_system ICONTAINS 'windows' OR a.operating_system ICONTAINS ‘linux' OR a.operating_system ICONTAINS ‘mac’)
+//UNWIND a.hostnames AS Hostname
+RETURN DISTINCT
+  a.name,
+  a.asset_class,
+  a.asset_type,
+  a.`Rapid7InsightAgent:lastLoggedInUser`
+  CASE WHEN 'Rapid7InsightAgent' IN a.sources THEN '✅' ELSE '❌' END AS Rapid7Agent,
+  CASE WHEN 'Rapid7IVMAsset’ IN a.sources THEN '✅' ELSE '❌' END AS Rapid7IVM,
+  //CASE WHEN ‘<whatevercrowdstrikeiscalled>’ IN a.sources THEN '✅' ELSE '❌' END AS Crowdstrike,
+  CASE WHEN 'AzureAdDevice' IN a.sources THEN '✅' ELSE '❌' END AS AzureAD,
+  CASE WHEN 'CiscoUmbrellaRoamingComputer' IN a.sources THEN '✅' ELSE '❌' END AS CiscoUmbrella
+ORDER BY a.name 
